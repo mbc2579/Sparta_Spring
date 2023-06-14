@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 @Entity // JPA가 관리할 수 있는 Entity 클래스 지정
 @Getter
 @Setter
