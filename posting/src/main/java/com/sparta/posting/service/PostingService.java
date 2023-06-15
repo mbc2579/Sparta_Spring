@@ -35,15 +35,15 @@ public class PostingService {
         return postingRepository.findAllByOrderByModifiedAtDesc().stream().map(PostingResponseDto::new).toList();
     }
 
-    public Posting lookupPosting(Long id) {
+    public PostingResponseDto lookupPosting(Long id) {
         // 해당 게시물이 DB에 존재하는지 확인
         Posting posting = findPosting(id);
 
-        return posting;
+        return new PostingResponseDto(posting);
     }
 
     @Transactional
-    public Posting updatePosting(Long id, PostingRequestDto requestDto) {
+    public PostingResponseDto updatePosting(Long id, PostingRequestDto requestDto) {
         // 해당 게시물이 DB에 존재하는지 확인
         Posting posting = findPosting(id);
 
@@ -53,7 +53,7 @@ public class PostingService {
         } else {
             // 비밀번호가 같지 않을경우 수정이 되지 않음
         }
-        return posting;
+        return new PostingResponseDto(posting);
     }
 
     public Boolean deletePosting(Long id, PostingRequestDto requestDto) {

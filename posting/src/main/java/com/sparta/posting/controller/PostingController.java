@@ -28,13 +28,13 @@ public class PostingController {
     }
 
     @GetMapping("/post/{id}")
-    public Posting lookupPosting(@PathVariable Long id) {
+    public PostingResponseDto lookupPosting(@PathVariable Long id) {
         return postingService.lookupPosting(id);
     }
 
 
     @PutMapping("/post/{id}")
-    public Posting updatePosting(@PathVariable Long id, @RequestBody PostingRequestDto requestDto) {
+    public PostingResponseDto updatePosting(@PathVariable Long id, @RequestBody PostingRequestDto requestDto) {
         return postingService.updatePosting(id, requestDto);
     }
 
