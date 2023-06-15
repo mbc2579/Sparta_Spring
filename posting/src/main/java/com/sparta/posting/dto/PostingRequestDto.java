@@ -8,4 +8,6 @@ public class PostingRequestDto {
     private String username;
     private String contents;
     private String password;
+
+
 }

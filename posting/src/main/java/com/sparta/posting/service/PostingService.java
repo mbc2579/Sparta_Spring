@@ -36,7 +36,7 @@ public class PostingService {
     }
 
     public Posting lookupPosting(Long id) {
-        // 해당 메모가 DB에 존재하는지 확인
+        // 해당 게시물이 DB에 존재하는지 확인
         Posting posting = findPosting(id);
 
         return posting;
@@ -44,28 +44,34 @@ public class PostingService {
 
     @Transactional
     public Posting updatePosting(Long id, PostingRequestDto requestDto) {
-        // 해당 메모가 DB에 존재하는지 확인
+        // 해당 게시물이 DB에 존재하는지 확인
         Posting posting = findPosting(id);
 
-        // memo 내용 수정
-        posting.update(requestDto);
-
+        if(posting.getPassword().equals(requestDto.getPassword())) {
+            // 게시물 내용 수정
+            posting.update(requestDto);
+        } else {
+            // 비밀번호가 같지 않을경우 수정이 되지 않음
+        }
         return posting;
     }
 
-    public Long deletePosting(Long id) {
-        // 해당 메모가 DB에 존재하는지 확인
+    public Boolean deletePosting(Long id, PostingRequestDto requestDto) {
+        // 해당 게시물이 DB에 존재하는지 확인
         Posting posting = findPosting(id);
 
-        // memo 삭제
-        postingRepository.delete(posting);
-
-        return id;
+        if(posting.getPassword().equals(requestDto.getPassword())) {
+            // 게시물 삭제
+            postingRepository.delete(posting);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private Posting findPosting(Long id) {
         return postingRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("선택한 메모는 존재하지 않습니다.")
+                new IllegalArgumentException("선택한 게시물은 존재하지 않습니다.")
         );
     }
 }

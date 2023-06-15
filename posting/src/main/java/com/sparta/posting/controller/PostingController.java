@@ -39,7 +39,7 @@ public class PostingController {
     }
 
     @DeleteMapping("/post/{id}")
-    public Long deletePosting(@PathVariable Long id) {
-        return postingService.deletePosting(id);
+    public Boolean deletePosting(@PathVariable Long id, @RequestBody PostingRequestDto requestDto) {
+        return postingService.deletePosting(id, requestDto);
     }
 }
