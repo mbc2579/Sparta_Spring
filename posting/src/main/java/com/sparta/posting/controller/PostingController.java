@@ -2,7 +2,6 @@ package com.sparta.posting.controller;
 
 import com.sparta.posting.dto.PostingRequestDto;
 import com.sparta.posting.dto.PostingResponseDto;
-import com.sparta.posting.entity.Posting;
 import com.sparta.posting.service.PostingService;
 import org.springframework.web.bind.annotation.*;
 

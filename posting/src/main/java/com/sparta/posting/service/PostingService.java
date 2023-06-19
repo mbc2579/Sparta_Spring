@@ -38,7 +38,6 @@ public class PostingService {
     public PostingResponseDto lookupPosting(Long id) {
         // 해당 게시물이 DB에 존재하는지 확인
         Posting posting = findPosting(id);
-
         return new PostingResponseDto(posting);
     }
 
