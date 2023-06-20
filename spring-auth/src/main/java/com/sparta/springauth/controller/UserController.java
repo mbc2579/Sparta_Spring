@@ -5,6 +5,7 @@ import com.sparta.springauth.dto.SignupRequestDto;
 import com.sparta.springauth.service.UserService;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.java.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
