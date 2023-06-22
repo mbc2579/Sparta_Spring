@@ -41,7 +41,7 @@ public class Product extends Timestamped {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "proudct")
+    @OneToMany(mappedBy = "product")
     private List<ProductFolder> productFolderList = new ArrayList<>();
 
     public Product(ProductRequestDto requestDto, User user) {
