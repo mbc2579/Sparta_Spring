@@ -2,9 +2,13 @@ package com.sparta.posting.controller;
 
 import com.sparta.posting.dto.PostingRequestDto;
 import com.sparta.posting.dto.PostingResponseDto;
+import com.sparta.posting.security.UserDetailsImpl;
 import com.sparta.posting.service.PostingService;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -17,8 +21,8 @@ public class PostingController {
     }
 
     @PostMapping("/post")
-    public PostingResponseDto createPosting(@RequestBody PostingRequestDto requestDto) {
-        return postingService.createPosting(requestDto);
+    public PostingResponseDto createPosting(@RequestBody PostingRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postingService.createPosting(requestDto, userDetails.getUser());
     }
 
     @GetMapping("/posts")
@@ -33,12 +37,12 @@ public class PostingController {
 
 
     @PutMapping("/post/{id}")
-    public PostingResponseDto updatePosting(@PathVariable Long id, @RequestBody PostingRequestDto requestDto) {
-        return postingService.updatePosting(id, requestDto);
+    public PostingResponseDto updatePosting(@PathVariable Long id, @RequestBody PostingRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postingService.updatePosting(id, requestDto, userDetails.getUser());
     }
 
     @DeleteMapping("/post/{id}")
-    public Boolean deletePosting(@PathVariable Long id, @RequestBody PostingRequestDto requestDto) {
-        return postingService.deletePosting(id, requestDto);
+    public void deletePosting(@PathVariable Long id,HttpServletResponse res, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        postingService.deletePosting(res, id, userDetails.getUser());
     }
 }

@@ -12,29 +12,25 @@ import lombok.Setter;
 @Table(name = "posting")
 @NoArgsConstructor
 public class Posting extends Timestamped{
+    @ManyToOne
+    @JoinColumn
+    private User user;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "username", nullable = false)
-    private String username;
     @Column(name = "contents", nullable = false)
     private String contents;
-    @Column(name = "password", nullable = false)
-    private String password;
 
     public Posting(PostingRequestDto requestDto) {
         this.title = requestDto.getTitle();
-        this.username = requestDto.getUsername();
         this.contents = requestDto.getContents();
-        this.password = requestDto.getPassword();
     }
 
     public void update(PostingRequestDto requestDto) {
         this.title = requestDto.getTitle();
-        this.username = requestDto.getUsername();
         this.contents = requestDto.getContents();
-        this.password = requestDto.getPassword();
     }
 }
