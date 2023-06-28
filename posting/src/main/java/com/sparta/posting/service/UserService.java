@@ -23,7 +23,7 @@ public class UserService {
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
 
-        if (Pattern.matches("^[a-zA-Z0-9]{8,15}$", requestDto.getPassword())) {
+        if (Pattern.matches("^[a-zA-Z0-9`~!@#$%^&*()-_=+]{8,15}$", requestDto.getPassword())) {
             // 회원 중복 확인
             Optional<User> checkUsername = userRepository.findByUsername(username);
             if (checkUsername.isPresent()) {
