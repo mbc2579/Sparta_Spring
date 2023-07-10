@@ -22,9 +22,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-
-    private final FolderRepository folderRepository;
     private final ProductRepository productRepository;
+    private final FolderRepository folderRepository;
     private final ProductFolderRepository productFolderRepository;
 
     public static final int MIN_MY_PRICE = 100;
