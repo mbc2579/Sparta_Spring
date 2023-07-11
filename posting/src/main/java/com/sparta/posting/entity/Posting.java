@@ -5,10 +5,15 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Getter
 @Setter
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "posting")
 @NoArgsConstructor
 public class Posting extends Timestamped{
@@ -23,6 +28,10 @@ public class Posting extends Timestamped{
     private String title;
     @Column(name = "contents", nullable = false)
     private String contents;
+
+    @ColumnDefault("0")
+    @Column(name = "like_count", nullable = false)
+    private Integer likeCount;
 
     public Posting(PostingRequestDto requestDto) {
         this.title = requestDto.getTitle();
