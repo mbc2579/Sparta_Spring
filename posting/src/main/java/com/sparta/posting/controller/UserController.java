@@ -1,7 +1,9 @@
 package com.sparta.posting.controller;
 
+import com.sparta.posting.dto.LoginRequestDto;
 import com.sparta.posting.dto.SignupRequestDto;
 import com.sparta.posting.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,5 +28,9 @@ public class UserController {
         return userService.signup(requestDto);
 
 //        return "redirect:/api/user/login-page";
+    }
+    @PostMapping("/user/login")
+    public void login(@RequestBody LoginRequestDto requestDto, HttpServletResponse response) {
+        userService.login(requestDto,response);
     }
 }
