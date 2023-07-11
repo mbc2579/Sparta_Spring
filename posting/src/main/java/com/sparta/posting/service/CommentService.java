@@ -37,10 +37,8 @@ public class CommentService {
             return null;
         }
 
-        // 해당 게시글이 있을 경우
         Comment comment = new Comment(requestDto,posting.get(),user);
 
-        // DB에 댓글 저장.
         commentRepository.save(comment);
         return new CommentResponseDto(comment);
     }
