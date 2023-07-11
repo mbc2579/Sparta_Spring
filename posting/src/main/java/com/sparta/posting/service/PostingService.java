@@ -4,8 +4,10 @@ import com.sparta.posting.dto.PostingRequestDto;
 import com.sparta.posting.dto.PostingResponseDto;
 import com.sparta.posting.entity.Posting;
 import com.sparta.posting.entity.User;
+import com.sparta.posting.entity.UserRoleEnum;
 import com.sparta.posting.repository.PostingRepository;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+@Slf4j
 @Service
 public class PostingService {
     private final PostingRepository postingRepository;
@@ -57,7 +60,8 @@ public class PostingService {
         String postUsername = post.getUser().getUsername(); // 게시글의 작성자 이름
         String loginUsername = user.getUsername(); // 로그인된 사용자 이름
 
-        if(postUsername.equals(loginUsername)){
+
+        if(postUsername.equals(loginUsername) || user.getRole().equals(UserRoleEnum.ADMIN)){
             post.update(requestDto);
         }
         return new PostingResponseDto(post);
@@ -71,7 +75,7 @@ public class PostingService {
         String postUsername = posting.getUser().getUsername(); // 게시글의 작성자 이름
         String loginUsername = user.getUsername(); // 로그인된 사용자 이름
 
-        if(postUsername.equals(loginUsername)){
+        if(postUsername.equals(loginUsername) || user.getRole().equals(UserRoleEnum.ADMIN)){
             postingRepository.delete(posting);
             this.responseResult(res,200,"게시글 삭제 성공");
         }else {

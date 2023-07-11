@@ -28,6 +28,7 @@ public class UserService {
     public String signup(SignupRequestDto requestDto) {
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
+        UserRoleEnum role = requestDto.getRole();
 
         if (Pattern.matches("^[a-zA-Z0-9`~!@#$%^&*()-_=+]{8,15}$", requestDto.getPassword())) {
             // 회원 중복 확인
@@ -36,7 +37,7 @@ public class UserService {
                 throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
 
             } else {
-                User user = new User(username, password);
+                User user = new User(username, password, role);
                 userRepository.save(user);
 
                 return "";
