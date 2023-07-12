@@ -3,12 +3,14 @@ package com.sparta.posting.dto;
 import com.sparta.posting.entity.Comment;
 import com.sparta.posting.entity.Posting;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 public class PostingResponseDto {
     private Long id;
     private String title;
