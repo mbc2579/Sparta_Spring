@@ -87,13 +87,13 @@ public class CommentService {
         return ResponseEntity.status(200).body(new ApiResponseDto(HttpStatus.OK.value(), "댓글 삭제 성공"));
     }
 
-    public List<CommentResponseDto> getComments(Long postId) {
-        List<Comment> commentList = commentRepository.findAllByPostingIdOrderByCreatedAt(postId);
-        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-
-        for (Comment comment : commentList) {
-            commentResponseDtoList.add(new CommentResponseDto(comment));
-        }
-        return commentResponseDtoList;
-    }
+//    public List<CommentResponseDto> getComments(Long postId) {
+//        List<Comment> commentList = commentRepository.findAllByPostingIdOrderByCreatedAt(postId);
+//        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+//
+//        for (Comment comment : commentList) {
+//            commentResponseDtoList.add(new CommentResponseDto(comment));
+//        }
+//        return commentResponseDtoList;
+//    }
 }

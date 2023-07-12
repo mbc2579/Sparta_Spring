@@ -9,6 +9,9 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -32,6 +35,9 @@ public class Posting extends Timestamped{
     @ColumnDefault("0")
     @Column(name = "like_count", nullable = false)
     private Integer likeCount;
+
+    @OneToMany(mappedBy = "posting")
+    private List<Comment> commentList = new ArrayList<>();
 
     public Posting(PostingRequestDto requestDto) {
         this.title = requestDto.getTitle();
