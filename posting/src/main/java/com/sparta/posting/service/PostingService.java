@@ -2,7 +2,6 @@ package com.sparta.posting.service;
 
 import com.sparta.posting.dto.PostingRequestDto;
 import com.sparta.posting.dto.PostingResponseDto;
-import com.sparta.posting.entity.Like;
 import com.sparta.posting.entity.Posting;
 import com.sparta.posting.entity.User;
 import com.sparta.posting.entity.UserRoleEnum;
@@ -16,16 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
 public class PostingService {
-    private final LikeRepository likeRepository;
     private final PostingRepository postingRepository;
 
     public PostingService(LikeRepository likeRepository, PostingRepository postingRepository) {
-        this.likeRepository = likeRepository;
         this.postingRepository = postingRepository;
     }
 
