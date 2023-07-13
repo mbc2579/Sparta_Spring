@@ -2,9 +2,11 @@ package com.sparta.posting.service;
 
 import com.sparta.posting.dto.PostingRequestDto;
 import com.sparta.posting.dto.PostingResponseDto;
+import com.sparta.posting.entity.Like;
 import com.sparta.posting.entity.Posting;
 import com.sparta.posting.entity.User;
 import com.sparta.posting.entity.UserRoleEnum;
+import com.sparta.posting.repository.LikeRepository;
 import com.sparta.posting.repository.PostingRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -14,13 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
 public class PostingService {
+    private final LikeRepository likeRepository;
     private final PostingRepository postingRepository;
 
-    public PostingService(PostingRepository postingRepository) {
+    public PostingService(LikeRepository likeRepository, PostingRepository postingRepository) {
+        this.likeRepository = likeRepository;
         this.postingRepository = postingRepository;
     }
 
@@ -63,15 +68,16 @@ public class PostingService {
 
         if(postUsername.equals(loginUsername) || user.getRole().equals(UserRoleEnum.ADMIN)){
             post.update(requestDto);
+            return new PostingResponseDto(post);
         }
-        return new PostingResponseDto(post);
+//        this.responseResult(res,400,"작성자만 수정할 수 있습니다.");
+        throw new IllegalArgumentException("작성자만 수정할 수 있습니다.");
     }
 
-    public void deletePosting(HttpServletResponse res, Long id, User user) throws IOException {
+    public void deletePosting(HttpServletResponse res, Long id, User user) throws IOException{
         // 1. 해당 게시글이 있는지 확인
         Posting posting = this.findPosting(id);
 
-        // 2. 해당 게시글의 작성자라면 수정하도록 함.
         String postUsername = posting.getUser().getUsername(); // 게시글의 작성자 이름
         String loginUsername = user.getUsername(); // 로그인된 사용자 이름
 
@@ -79,9 +85,15 @@ public class PostingService {
             postingRepository.delete(posting);
             this.responseResult(res,200,"게시글 삭제 성공");
         }else {
-            this.responseResult(res,401,"게시글 삭제 실패");
+//            this.responseResult(res,401,"게시글 삭제 실패");
+            throw new IllegalArgumentException("작성자만 삭제할 수 있습니다.");
         }
     }
+
+//    private void deleteLike(Long id) {
+//        List<Like> likeList = likeRepository.findByPosting(id);
+//        likeRepository.deleteAll(likeList);
+//    }
 
     private void responseResult(HttpServletResponse response, int statusCode, String message) throws IOException {
         String jsonResponse = "{\"status\": " + statusCode + ", \"message\": \"" + message + "\"}";
