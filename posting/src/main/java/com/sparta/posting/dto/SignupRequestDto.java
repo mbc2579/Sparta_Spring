@@ -10,7 +10,7 @@ import lombok.Setter;
 public class SignupRequestDto {
 
 
-    @Pattern(regexp = "^[a-z0-9]{4,10}$")
+//    @Pattern(regexp = "^[a-z0-9]{4,10}$")
     private String username;
 
 

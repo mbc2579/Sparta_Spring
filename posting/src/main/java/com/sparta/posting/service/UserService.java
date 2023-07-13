@@ -30,7 +30,7 @@ public class UserService {
         String password = passwordEncoder.encode(requestDto.getPassword());
         UserRoleEnum role = requestDto.getRole();
 
-        if (Pattern.matches("^[a-zA-Z0-9`~!@#$%^&*()-_=+]{8,15}$", requestDto.getPassword())) {
+        if (Pattern.matches("^[a-zA-Z0-9`~!@#$%^&*()-_=+]{8,15}$", requestDto.getPassword()) && Pattern.matches("^[a-z0-9]{4,10}$", requestDto.getUsername())) {
             // 회원 중복 확인
             Optional<User> checkUsername = userRepository.findByUsername(username);
             if (checkUsername.isPresent()) {
