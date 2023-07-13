@@ -20,7 +20,6 @@ public class User {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-//    @Pattern(regexp = "^[A-Za-z0-9]{8,15}$")
     @Column(name = "password",nullable = false)
     private String password;
 

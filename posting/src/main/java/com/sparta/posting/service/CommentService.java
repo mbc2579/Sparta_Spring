@@ -6,7 +6,6 @@ import com.sparta.posting.dto.CommentResponseDto;
 import com.sparta.posting.entity.*;
 import com.sparta.posting.repository.CommentLikeRepository;
 import com.sparta.posting.repository.CommentRepository;
-import com.sparta.posting.repository.LikeRepository;
 import com.sparta.posting.repository.PostingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,8 +31,7 @@ public class CommentService {
 
         // 해당 게시글이 없을 경우
         if(!posting.isPresent()) {
-            log.error("게시글이 존재하지 않습니다.");
-            return null;
+            throw new IllegalArgumentException("게시글이 존재하지 않습니다.");
         }
 
         Comment comment = new Comment(requestDto,posting.get(),user);
@@ -49,15 +46,13 @@ public class CommentService {
         Optional<Comment> checkComment = commentRepository.findById(id);
 
         if(!checkComment.isPresent()){
-            log.error("해당 댓글이 없습니다.");
-            return null;
+            throw new IllegalArgumentException("해당 댓글이 없습니다.");
         }
         Comment comment = checkComment.get();
         Long commentUserId = comment.getUser().getId();
 
         if(!commentUserId.equals(user.getId()) && !user.getRole().equals(UserRoleEnum.ADMIN)){
-            log.error("해당 댓글의 작성자가 아닙니다.");
-            return null;
+            throw new IllegalArgumentException("작성자만 수정할 수 있습니다.");
         }
 
 
@@ -71,15 +66,13 @@ public class CommentService {
         Optional<Comment> checkComment = commentRepository.findById(id);
 
         if(!checkComment.isPresent()){
-            log.error("해당 댓글이 없습니다.");
-            return null;
+            throw new IllegalArgumentException("해당 댓글이 없습니다.");
         }
 
         Comment comment = checkComment.get();
         Long commentUserId = comment.getUser().getId();
         if(!commentUserId.equals(user.getId()) && !user.getRole().equals(UserRoleEnum.ADMIN)){
-            log.error("해당 댓글의 작성자가 아닙니다.");
-            return null;
+            throw new IllegalArgumentException("작성자만 삭제할 수 있습니다.");
         }
 
         deleteLike(comment.getId());

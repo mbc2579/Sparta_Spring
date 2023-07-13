@@ -5,14 +5,11 @@ import com.sparta.posting.dto.CommentRequestDto;
 import com.sparta.posting.dto.CommentResponseDto;
 import com.sparta.posting.security.UserDetailsImpl;
 import com.sparta.posting.service.CommentService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 @Controller
 @RequestMapping("/api")

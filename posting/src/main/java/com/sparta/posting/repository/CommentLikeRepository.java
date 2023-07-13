@@ -1,6 +1,9 @@
 package com.sparta.posting.repository;
 
-import com.sparta.posting.entity.*;
+import com.sparta.posting.entity.Comment;
+import com.sparta.posting.entity.CommentLike;
+import com.sparta.posting.entity.Posting;
+import com.sparta.posting.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
