@@ -2,6 +2,7 @@ package com.sparta.posting.service;
 
 import com.sparta.posting.dto.PostingRequestDto;
 import com.sparta.posting.dto.PostingResponseDto;
+import com.sparta.posting.entity.Like;
 import com.sparta.posting.entity.Posting;
 import com.sparta.posting.entity.User;
 import com.sparta.posting.entity.UserRoleEnum;
@@ -20,9 +21,11 @@ import java.util.List;
 @Service
 public class PostingService {
     private final PostingRepository postingRepository;
+    private final LikeRepository likeRepository;
 
-    public PostingService(LikeRepository likeRepository, PostingRepository postingRepository) {
+    public PostingService(LikeRepository likeRepository, PostingRepository postingRepository, LikeRepository likeRepository1) {
         this.postingRepository = postingRepository;
+        this.likeRepository = likeRepository1;
     }
 
     public PostingResponseDto createPosting(PostingRequestDto requestDto, User user) {
@@ -78,18 +81,18 @@ public class PostingService {
         String loginUsername = user.getUsername(); // 로그인된 사용자 이름
 
         if(postUsername.equals(loginUsername) || user.getRole().equals(UserRoleEnum.ADMIN)){
+            deleteLike(posting.getId());
             postingRepository.delete(posting);
             this.responseResult(res,200,"게시글 삭제 성공");
         }else {
-//            this.responseResult(res,401,"게시글 삭제 실패");
             throw new IllegalArgumentException("작성자만 삭제할 수 있습니다.");
         }
     }
 
-//    private void deleteLike(Long id) {
-//        List<Like> likeList = likeRepository.findByPosting(id);
-//        likeRepository.deleteAll(likeList);
-//    }
+    private void deleteLike(Long id) {
+        List<Like> likeList = likeRepository.findByPostingId(id);
+        likeRepository.deleteAll(likeList);
+    }
 
     private void responseResult(HttpServletResponse response, int statusCode, String message) throws IOException {
         String jsonResponse = "{\"status\": " + statusCode + ", \"message\": \"" + message + "\"}";

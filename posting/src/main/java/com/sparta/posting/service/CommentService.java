@@ -3,11 +3,10 @@ package com.sparta.posting.service;
 import com.sparta.posting.dto.ApiResponseDto;
 import com.sparta.posting.dto.CommentRequestDto;
 import com.sparta.posting.dto.CommentResponseDto;
-import com.sparta.posting.entity.Comment;
-import com.sparta.posting.entity.Posting;
-import com.sparta.posting.entity.User;
-import com.sparta.posting.entity.UserRoleEnum;
+import com.sparta.posting.entity.*;
+import com.sparta.posting.repository.CommentLikeRepository;
 import com.sparta.posting.repository.CommentRepository;
+import com.sparta.posting.repository.LikeRepository;
 import com.sparta.posting.repository.PostingRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +25,7 @@ import java.util.Optional;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final PostingRepository postingRepository;
+    private final CommentLikeRepository commentLikeRepository;
 
     public CommentResponseDto createComment(Long post_id, CommentRequestDto requestDto, User user) {
         // 해당 게시글이 있는지
@@ -82,18 +82,14 @@ public class CommentService {
             return null;
         }
 
+        deleteLike(comment.getId());
         commentRepository.delete(comment);
         log.info("댓글 삭제 완료");
         return ResponseEntity.status(200).body(new ApiResponseDto(HttpStatus.OK.value(), "댓글 삭제 성공"));
     }
 
-//    public List<CommentResponseDto> getComments(Long postId) {
-//        List<Comment> commentList = commentRepository.findAllByPostingIdOrderByCreatedAt(postId);
-//        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-//
-//        for (Comment comment : commentList) {
-//            commentResponseDtoList.add(new CommentResponseDto(comment));
-//        }
-//        return commentResponseDtoList;
-//    }
+    private void deleteLike(Long id) {
+        List<CommentLike> likeList = commentLikeRepository.findByCommentId(id);
+        commentLikeRepository.deleteAll(likeList);
+    }
 }

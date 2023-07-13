@@ -23,13 +23,13 @@ public class LikeController {
         likeService.post_cancel(id, userDetails);
     }
 
-    @PostMapping("/post/{id}/comment/like")
-    public ResponseEntity<String> comment_like(@PathVariable(name = "id") Long post_id, @PathVariable(name = "id") Long comment_id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @PostMapping("/post/{post_id}/{comment_id}/like")
+    public ResponseEntity<String> comment_like(@PathVariable(name = "post_id") Long post_id, @PathVariable(name = "comment_id") Long comment_id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return likeService.comment_like(post_id, comment_id, userDetails);
     }
 
-    @DeleteMapping("/post/{id}/comment/like")
-    public void comment_cancel(@PathVariable(name = "id") Long postId, @PathVariable(name = "id") Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    @DeleteMapping("/post/{post_id}/{comment_id}/like")
+    public void comment_cancel(@PathVariable(name = "post_id") Long postId, @PathVariable(name = "comment_id") Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         likeService.comment_cancel(postId, commentId, userDetails);
     }
 }
