@@ -38,7 +38,7 @@ public class PostingController {
 
     @PutMapping("/post/{id}")
     public PostingResponseDto updatePosting(@PathVariable Long id, @RequestBody PostingRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return postingService.updatePosting(id, requestDto, userDetails.getUser());
+        return postingService.updatePosting(id, requestDto, userDetails);
     }
 
     @DeleteMapping("/post/{id}")

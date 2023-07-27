@@ -2,6 +2,7 @@ package com.sparta.posting.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@EqualsAndHashCode
 @Table(name = "users")
 public class User {
     @Id

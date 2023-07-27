@@ -8,6 +8,7 @@ import com.sparta.posting.entity.User;
 import com.sparta.posting.entity.UserRoleEnum;
 import com.sparta.posting.repository.LikeRepository;
 import com.sparta.posting.repository.PostingRepository;
+import com.sparta.posting.security.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -55,17 +56,16 @@ public class PostingService {
     }
 
     @Transactional
-    public PostingResponseDto updatePosting(Long id, PostingRequestDto requestDto, User user) {
+    public PostingResponseDto updatePosting(Long id, PostingRequestDto requestDto, UserDetailsImpl userDetails) {
 
         // 1. 해당 게시글이 있는지 확인
         Posting post = this.findPosting(id);
 
         // 2. 해당 게시글의 작성자라면 수정하도록 함.
-        String postUsername = post.getUser().getUsername(); // 게시글의 작성자 이름
-        String loginUsername = user.getUsername(); // 로그인된 사용자 이름
+//        String postUsername = post.getUser().getUsername(); // 게시글의 작성자 이름
+        User loginUser  = userDetails.getUser(); // 로그인된 사용자 이름
 
-
-        if(postUsername.equals(loginUsername) || user.getRole().equals(UserRoleEnum.ADMIN)){
+        if(loginUser.getRole().equals(UserRoleEnum.ADMIN) || post.getUser().equals(loginUser)){
             post.update(requestDto);
             return new PostingResponseDto(post);
         }
