@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.ibatis.annotations.One;
+import org.example.mention.Mention;
 import org.example.userChannel.UserChannel;
 
 import java.util.LinkedHashSet;
@@ -29,8 +29,8 @@ public class User {
     private String password;
 
     /**
-       * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
-       */
+     * 생성자 - 약속된 형태로만 생성가능하도록 합니다.
+     */
     @Builder
     public User(String username, String password) {
         this.username = username;
@@ -43,6 +43,8 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<UserChannel> userChannels = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    Set<Mention> mentions = new LinkedHashSet<>();
 
     /**
      * 연관관계 편의 메소드 - 반대쪽에는 연관관계 편의 메소드가 없도록 주의합니다.

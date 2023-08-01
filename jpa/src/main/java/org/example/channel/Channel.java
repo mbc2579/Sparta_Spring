@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.thread.Thread;
-import org.example.thread.ThreadRepository;
 import org.example.user.User;
 import org.example.userChannel.UserChannel;
 
