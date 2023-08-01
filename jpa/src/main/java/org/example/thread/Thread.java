@@ -6,8 +6,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.channel.Channel;
+import org.example.comment.Comment;
 import org.example.common.Timestamp;
-import org.example.mention.Mention;
+import org.example.emotion.ThreadEmotion;
+import org.example.mention.ThreadMention;
 import org.example.user.User;
 
 import java.util.LinkedHashSet;
@@ -46,7 +48,13 @@ public class Thread extends Timestamp {
     private Channel channel;
 
     @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL, orphanRemoval = true)
-    Set<Mention> mentions = new LinkedHashSet<>();
+    private Set<Comment> comments = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ThreadMention> mentions = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ThreadEmotion> emotions = new LinkedHashSet<>();
 
     /**
      * 연관관계 편의 메소드 - 반대쪽에는 연관관계 편의 메소드가 없도록 주의합니다.
@@ -57,9 +65,9 @@ public class Thread extends Timestamp {
     }
 
     public void addMention(User user) {
-        var mention = Mention.builder().user(user).thread(this).build();
+        var mention = ThreadMention.builder().user(user).thread(this).build();
         this.mentions.add(mention);
-        user.getMentions().add(mention);
+        user.getThreadMentions().add(mention);
     }
 
     /**

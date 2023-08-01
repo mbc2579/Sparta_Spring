@@ -101,7 +101,7 @@ public class UserChannelRepositoryTest {
         var pageDTO = new PageDTO(1, 2, "password");
 
         // when
-        var page = userRepository.findAll(pageDTO.toPageable());
+        var page = userRepository.findAll(pageDTO.toPageable("metions"));
 
         // then
         assert page.getContent().size() == 2;
