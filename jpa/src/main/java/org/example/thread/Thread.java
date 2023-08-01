@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.channel.Channel;
+import org.example.common.Timestamp;
 import org.example.mention.Mention;
 import org.example.user.User;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Thread {
+public class Thread extends Timestamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

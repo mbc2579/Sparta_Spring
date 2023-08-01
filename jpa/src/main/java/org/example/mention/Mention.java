@@ -8,13 +8,14 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.common.Timestamp;
 import org.example.thread.Thread;
 import org.example.user.User;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Mention {
+public class Mention extends Timestamp {
 
     @EmbeddedId
     private MentionId mentionId;

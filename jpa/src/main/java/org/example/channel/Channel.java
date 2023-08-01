@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.common.Timestamp;
 import org.example.thread.Thread;
 import org.example.user.User;
 import org.example.userChannel.UserChannel;
@@ -15,7 +16,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Channel {
+public class Channel extends Timestamp {
 
     /**
      * 컬럼 - 연관관계 컬럼을 제외한 컬럼을 정의합니다.
@@ -69,4 +70,18 @@ public class Channel {
     /**
      * 서비스 메소드 - 외부에서 엔티티를 수정할 메소드를 정의합니다. (단일 책임을 가지도록 주의합니다.)
      */
+
+    /**
+     * 라이프 사이클 메서드
+     */
+    @PrePersist
+    public void prePersist() {
+        super.updateModifiedAt();
+        super.updateCreatedAt();
+    }
+
+    @PreUpdate
+    public void PreUpdate() {
+        super.updateModifiedAt();
+    }
 }
