@@ -6,13 +6,13 @@ import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.Objects;
 
-import static org.example.channel.QChannel.channel;
 import static org.example.thread.QThread.thread;
 
 @RequiredArgsConstructor
@@ -23,14 +23,24 @@ public class ThreadRepositoryQueryImpl implements ThreadRepositoryQuery {
     @Override
     public Page<Thread> search(ThreadSearchCond cond, Pageable pageable) {
         var query = query(thread, cond).offset(pageable.getOffset()).limit(pageable.getPageSize());
+
+        query.orderBy(thread.mentions.any().createdAt.desc());
+
         var threads = query.fetch();
         long totalSize = countQuery(cond).fetch().get(0);
+
+        threads.stream().map(Thread::getComments).forEach(comments -> comments.forEach(comment -> Hibernate.initialize(comment.getEmotions())));
 
         return PageableExecutionUtils.getPage(threads, pageable, () -> totalSize);
     }
 
     private <T> JPAQuery<T> query(Expression<T> expr, ThreadSearchCond cond) {
-        return jpaQueryFactory.select(expr).from(thread).leftJoin(thread.channel, channel).fetchJoin().where(channelIdEq(cond.getChannelId()), mentionedUserIdEq(cond.getMentionedUserId()));
+        return jpaQueryFactory.select(expr).from(thread)
+                .leftJoin(thread.channel).fetchJoin()
+                .leftJoin(thread.emotions).fetchJoin()
+                .leftJoin(thread.comments).fetchJoin()
+                .leftJoin(thread.mentions).fetchJoin()
+                .where(channelIdEq(cond.getChannelId()), mentionedUserIdEq(cond.getMentionedUserId()));
     }
 
     private JPAQuery<Long> countQuery(ThreadSearchCond cond) {

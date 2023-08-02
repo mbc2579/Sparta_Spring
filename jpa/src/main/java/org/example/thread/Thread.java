@@ -44,13 +44,17 @@ public class Thread extends Timestamp {
      * 연관관계 - Foreign Key 값을 따로 컬럼으로 정의하지 않고 연관 관계로 정의합니다.
      */
     @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "channel_id")
     private Channel channel;
 
     @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<ThreadMention> mentions = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "thread", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -68,6 +72,16 @@ public class Thread extends Timestamp {
         var mention = ThreadMention.builder().user(user).thread(this).build();
         this.mentions.add(mention);
         user.getThreadMentions().add(mention);
+    }
+
+    public void addEmotion(User user, String body) {
+        var emotion = ThreadEmotion.builder().user(user).thread(this).body(body).build();
+        this.emotions.add(emotion);
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+        comment.setThread(this);
     }
 
     /**
